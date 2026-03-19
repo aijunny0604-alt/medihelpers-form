@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메디헬퍼스 - 의사 초빙 의뢰서</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .form-container {
+    background: #fff;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .form-header {
+    background: linear-gradient(135deg, #0a8f3c, #066b2e);
+    color: #fff;
+    padding: 36px 32px 28px;
+  }
+  .form-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .form-header p {
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.6;
+  }
+  .form-header .contact-info {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.9;
+    line-height: 1.8;
+  }
+  .form-body {
+    padding: 32px;
+  }
+  .required-notice {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+  .required-notice span { color: #d32f2f; }
+  .field {
+    margin-bottom: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .field label .req {
+    color: #d32f2f;
+    margin-left: 2px;
+  }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    border-color: #0a8f3c;
+    box-shadow: 0 0 0 3px rgba(10,143,60,0.1);
+  }
+  .field textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #bbb;
+  }
+  .radio-group {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.2s;
+    flex: 1;
+    justify-content: center;
+  }
+  .radio-option:hover {
+    border-color: #0a8f3c;
+    background: #f5fdf8;
+  }
+  .radio-option input[type="radio"] {
+    accent-color: #0a8f3c;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  .radio-option input[type="radio"]:checked + span {
+    color: #0a8f3c;
+    font-weight: 600;
+  }
+  .radio-option span {
+    font-size: 15px;
+    color: #555;
+  }
+  .inline-fields {
+    display: flex;
+    gap: 16px;
+  }
+  .inline-fields .field {
+    flex: 1;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #0a8f3c, #066b2e);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(10,143,60,0.35);
+  }
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+  .form-footer {
+    text-align: center;
+    padding: 20px 32px 28px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid #f0f0f0;
+  }
+  .privacy-notice {
+    background: #f5fdf8;
+    border: 1px solid #d4edda;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.7;
+  }
+  @media (max-width: 480px) {
+    body { padding: 20px 8px; }
+    .form-header { padding: 28px 20px 22px; }
+    .form-body { padding: 24px 20px; }
+    .form-header h1 { font-size: 19px; }
+    .radio-group { flex-direction: column; gap: 8px; }
+    .inline-fields { flex-direction: column; gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <div class="form-header">
+    <h1>메디헬퍼스 - 의사 초빙 의뢰서</h1>
+    <p>아래 양식을 작성하시면 담당 헤드헌터가 최적의 의사를 매칭해드립니다.</p>
+    <div class="contact-info">
+      연락처 : 010-2435-5463<br>
+      이메일 : hr@medihelpers.co.kr
+    </div>
+  </div>
+
+  <form id="recruitForm">
+    <div class="form-body">
+      <p class="required-notice"><span>*</span> 표시는 필수 질문입니다.</p>
+
+      <div class="field">
+        <label>병·의원 명 <span class="req">*</span></label>
+        <input type="text" name="병의원명" required placeholder="병·의원 이름을 입력해주세요">
+      </div>
+
+      <div class="field">
+        <label>담당자 성함과 직함 <span class="req">*</span></label>
+        <input type="text" name="담당자 성함과 직함" required placeholder="예: 홍길동 원장, 김철수 행정팀장">
+      </div>
+
+      <div class="field">
+        <label>연락 받으실 담당자 전화번호 <span class="req">*</span></label>
+        <input type="tel" name="담당자 전화번호" required placeholder="010-0000-0000">
+      </div>
+
+      <div class="field">
+        <label>병원 주소</label>
+        <input type="text" name="병원 주소" placeholder="예: 서울 강남구 역삼동 123-45">
+      </div>
+
+      <div class="field">
+        <label>이메일</label>
+        <input type="email" name="이메일" placeholder="example@email.com">
+      </div>
+
+      <div class="field">
+        <label>초빙 원하는 전공과목</label>
+        <input type="text" name="초빙 전공과목" placeholder="예: 내과, 정형외과, 피부과">
+      </div>
+
+      <div class="inline-fields">
+        <div class="field">
+          <label>의사 나이</label>
+          <input type="text" name="의사 나이" placeholder="예: 30~45세">
+        </div>
+        <div class="field">
+          <label>의사 성별</label>
+          <input type="text" name="의사 성별" placeholder="예: 무관, 남성, 여성">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>예상 페이(Net)</label>
+        <input type="text" name="예상 페이" placeholder="예: 월 1,500만원">
+      </div>
+
+      <div class="field">
+        <label>세부전공(Fellow) 유 / 무</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="세부전공" value="유">
+            <span>유</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="세부전공" value="무">
+            <span>무</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>경력 유 / 무</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="경력" value="유">
+            <span>유</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="경력" value="무">
+            <span>무</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>기타 전하실 말씀</label>
+        <textarea name="기타 전하실 말씀" placeholder="근무조건, 희망사항 등을 자유롭게 작성해주세요."></textarea>
+      </div>
+
+      <div class="privacy-notice">
+        본 양식을 통해 수집된 정보는 의사 초빙 매칭 목적으로만 사용되며,<br>
+        목적 달성 후 즉시 파기됩니다.
+      </div>
+
+      <button type="submit" class="submit-btn">초빙 의뢰서 제출하기</button>
+    </div>
+  </form>
+
+  <div class="form-footer">
+    &copy; 메디헬퍼스 | medihelpers.co.kr
+  </div>
+</div>
+
+<!-- 감사 화면 (제출 후 표시) -->
+<div id="thanksScreen" style="display:none;">
+  <div class="form-container" style="text-align:center; padding:60px 32px;">
+    <div style="width:80px;height:80px;background:linear-gradient(135deg,#0a8f3c,#066b2e);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h1 style="font-size:24px;color:#0a8f3c;margin-bottom:16px;">초빙 의뢰서가 정상적으로 접수되었습니다</h1>
+    <p style="font-size:16px;color:#555;line-height:1.8;margin-bottom:32px;">
+      소중한 의뢰서를 보내주셔서 감사합니다.<br>
+      담당 헤드헌터가 검토 후 빠른 시일 내에 연락드리겠습니다.
+    </p>
+    <div style="background:#f5fdf8;border:1px solid #d4edda;border-radius:10px;padding:20px;display:inline-block;font-size:14px;color:#666;line-height:1.8;">
+      <strong style="color:#333;">메디헬퍼스 의사헤드헌팅사업부</strong><br>
+      전화 : 010-2435-5463<br>
+      이메일 : hr@medihelpers.co.kr
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('recruitForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var form = this;
+  var data = new FormData(form);
+  data.append('_subject', '[메디헬퍼스] 새 초빙 의뢰서 접수');
+  data.append('_template', 'table');
+  data.append('_captcha', 'false');
+
+  fetch('https://formsubmit.co/ajax/hr@medihelpers.co.kr', {
+    method: 'POST',
+    body: data
+  }).then(function(response) {
+    return response.json();
+  }).then(function() {
+    document.querySelector('.form-container').style.display = 'none';
+    document.getElementById('thanksScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  }).catch(function() {
+    document.querySelector('.form-container').style.display = 'none';
+    document.getElementById('thanksScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  });
+});
+</script>
+
+</body>
+</html>
