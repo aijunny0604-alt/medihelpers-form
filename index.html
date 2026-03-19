@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메디헬퍼스 - 의사 선생님 간편 이력서</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .form-container {
+    background: #fff;
+    max-width: 580px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .form-header {
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: #fff;
+    padding: 36px 32px 28px;
+  }
+  .form-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .form-header p {
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.6;
+  }
+  .form-header .contact-info {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.9;
+    line-height: 1.8;
+  }
+  .form-body {
+    padding: 32px;
+  }
+  .required-notice {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+  .required-notice span { color: #d32f2f; }
+  .field {
+    margin-bottom: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .field label .req {
+    color: #d32f2f;
+    margin-left: 2px;
+  }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="number"],
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+  }
+  .field textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #bbb;
+  }
+  .radio-group {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.2s;
+    flex: 1;
+    justify-content: center;
+  }
+  .radio-option:hover {
+    border-color: #1a73e8;
+    background: #f8faff;
+  }
+  .radio-option input[type="radio"] {
+    accent-color: #1a73e8;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  .radio-option input[type="radio"]:checked + span {
+    color: #1a73e8;
+    font-weight: 600;
+  }
+  .radio-option span {
+    font-size: 15px;
+    color: #555;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(26,115,232,0.35);
+  }
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+  .form-footer {
+    text-align: center;
+    padding: 20px 32px 28px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid #f0f0f0;
+  }
+  .privacy-notice {
+    background: #f8faff;
+    border: 1px solid #e3ecf7;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.7;
+  }
+  @media (max-width: 480px) {
+    body { padding: 20px 8px; }
+    .form-header { padding: 28px 20px 22px; }
+    .form-body { padding: 24px 20px; }
+    .form-header h1 { font-size: 19px; }
+    .radio-group { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <div class="form-header">
+    <h1>메디헬퍼스 - 의사 선생님 간편 이력서</h1>
+    <p>아래 양식을 작성하시면 담당 헤드헌터가 빠르게 연락드리겠습니다.</p>
+    <div class="contact-info">
+      연락처 : 010-2435-5463<br>
+      이메일 : hr@medihelpers.co.kr
+    </div>
+  </div>
+
+  <form action="https://formsubmit.co/hr@medihelpers.co.kr" method="POST">
+    <div class="form-body">
+      <p class="required-notice"><span>*</span> 표시는 필수 질문입니다.</p>
+
+      <!-- FormSubmit 설정 -->
+      <input type="hidden" name="_subject" value="[메디헬퍼스] 새 이력서 접수">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_next" value="https://www.medihelpers.co.kr/">
+      <input type="text" name="_honey" style="display:none">
+
+      <div class="field">
+        <label>이름 <span class="req">*</span></label>
+        <input type="text" name="이름" required placeholder="성함을 입력해주세요">
+      </div>
+
+      <div class="field">
+        <label>성별 <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="성별" value="남성" required>
+            <span>남성</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="성별" value="여성">
+            <span>여성</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>생년 <span class="req">*</span></label>
+        <input type="number" name="생년" required placeholder="예: 1985" min="1940" max="2005">
+      </div>
+
+      <div class="field">
+        <label>이메일</label>
+        <input type="email" name="이메일" placeholder="example@email.com">
+      </div>
+
+      <div class="field">
+        <label>전화번호 <span class="req">*</span></label>
+        <input type="tel" name="전화번호" required placeholder="010-0000-0000">
+      </div>
+
+      <div class="field">
+        <label>최종학력 <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="최종학력" value="전문의" required>
+            <span>전문의</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="최종학력" value="일반의">
+            <span>일반의</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>원하시는 근무지 (지역명)</label>
+        <input type="text" name="원하시는 근무지" placeholder="예: 서울 강남, 경기 수원">
+      </div>
+
+      <div class="field">
+        <label>헤드헌터에게 전하실 말씀</label>
+        <textarea name="헤드헌터에게 전하실 말씀" placeholder="근무조건, 페이, 희망사항 등을 자유롭게 작성해주세요."></textarea>
+      </div>
+
+      <div class="privacy-notice">
+        본 양식을 통해 수집된 개인정보는 채용 매칭 목적으로만 사용되며,<br>
+        목적 달성 후 즉시 파기됩니다.
+      </div>
+
+      <button type="submit" class="submit-btn">이력서 제출하기</button>
+    </div>
+  </form>
+
+  <div class="form-footer">
+    &copy; 메디헬퍼스 | medihelpers.co.kr
+  </div>
+</div>
+
+</body>
+</html>
