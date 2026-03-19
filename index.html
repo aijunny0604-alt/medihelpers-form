@@ -186,16 +186,9 @@
     </div>
   </div>
 
-  <form action="https://formsubmit.co/hr@medihelpers.co.kr" method="POST">
+  <form id="resumeForm">
     <div class="form-body">
       <p class="required-notice"><span>*</span> 표시는 필수 질문입니다.</p>
-
-      <!-- FormSubmit 설정 -->
-      <input type="hidden" name="_subject" value="[메디헬퍼스] 새 이력서 접수">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="true">
-      <input type="hidden" name="_next" value="https://aijunny0604-alt.github.io/medihelpers-form/thanks.html">
-      <input type="text" name="_honey" style="display:none">
 
       <div class="field">
         <label>이름 <span class="req">*</span></label>
@@ -268,6 +261,51 @@
     &copy; 메디헬퍼스 | medihelpers.co.kr
   </div>
 </div>
+
+<!-- 감사 화면 (제출 후 표시) -->
+<div id="thanksScreen" style="display:none;">
+  <div class="form-container" style="text-align:center; padding:60px 32px;">
+    <div style="width:80px;height:80px;background:linear-gradient(135deg,#1a73e8,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h1 style="font-size:24px;color:#1a73e8;margin-bottom:16px;">이력서가 정상적으로 접수되었습니다</h1>
+    <p style="font-size:16px;color:#555;line-height:1.8;margin-bottom:32px;">
+      소중한 이력서를 보내주셔서 감사합니다.<br>
+      담당 헤드헌터가 검토 후 빠른 시일 내에 연락드리겠습니다.
+    </p>
+    <div style="background:#f8faff;border:1px solid #e3ecf7;border-radius:10px;padding:20px;display:inline-block;font-size:14px;color:#666;line-height:1.8;">
+      <strong style="color:#333;">메디헬퍼스 의사헤드헌팅사업부</strong><br>
+      전화 : 010-2435-5463<br>
+      이메일 : hr@medihelpers.co.kr
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('resumeForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var form = this;
+  var data = new FormData(form);
+  data.append('_subject', '[메디헬퍼스] 새 이력서 접수');
+  data.append('_template', 'table');
+  data.append('_captcha', 'false');
+
+  fetch('https://formsubmit.co/ajax/hr@medihelpers.co.kr', {
+    method: 'POST',
+    body: data
+  }).then(function(response) {
+    return response.json();
+  }).then(function() {
+    document.querySelector('.form-container').style.display = 'none';
+    document.getElementById('thanksScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  }).catch(function() {
+    document.querySelector('.form-container').style.display = 'none';
+    document.getElementById('thanksScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  });
+});
+</script>
 
 </body>
 </html>
