@@ -238,9 +238,9 @@
         </div>
       </div>
 
-      <div class="field">
-        <label>전문 과목</label>
-        <input type="text" name="전문 과목" placeholder="예: 내과, 정형외과, 피부과, 성형외과">
+      <div class="field" id="specialtyField" style="display:none;">
+        <label>전문 과목 <span class="req">*</span></label>
+        <input type="text" id="specialtyInput" name="전문 과목" placeholder="예: 내과, 정형외과, 피부과, 성형외과">
       </div>
 
       <div class="field">
@@ -287,6 +287,22 @@
 </div>
 
 <script>
+// 전문의 선택 시에만 전문 과목 표시 + 필수
+document.querySelectorAll('input[name="전문 분류"]').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    var field = document.getElementById('specialtyField');
+    var input = document.getElementById('specialtyInput');
+    if (this.value === '전문의') {
+      field.style.display = 'block';
+      input.required = true;
+    } else {
+      field.style.display = 'none';
+      input.required = false;
+      input.value = '';
+    }
+  });
+});
+
 document.getElementById('resumeForm').addEventListener('submit', function(e) {
   e.preventDefault();
   var form = this;
