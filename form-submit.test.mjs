@@ -4,6 +4,12 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const code = fs.readFileSync(new URL('./form-submit.js', import.meta.url), 'utf8');
+test('직접 방문한 옛 완료 페이지는 접수 성공을 단정하지 않는다', () => {
+  const html = fs.readFileSync(new URL('./thanks.html', import.meta.url), 'utf8');
+  assert.match(html, /이 페이지에서는 전송 결과를 확인할 수 없습니다/);
+  assert.doesNotMatch(html, /정상적으로 접수되었습니다|<title>제출 완료/);
+  assert.match(html, /중복 제출 전에/);
+});
 function setup(subject, fetchImpl) {
   let listener, timeout, calls = 0;
   const data = new Map([['검수', '입력값 유지']]);
