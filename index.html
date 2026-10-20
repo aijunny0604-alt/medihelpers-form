@@ -172,6 +172,7 @@
     .form-header h1 { font-size: 19px; }
     .radio-group { flex-direction: column; gap: 8px; }
   }
+  .submit-btn:disabled { opacity: 0.65; cursor: wait; }
 </style>
 </head>
 <body>
@@ -186,7 +187,7 @@
     </div>
   </div>
 
-  <form id="resumeForm">
+  <form id="resumeForm" data-mail-subject="[메디헬퍼스] 새 이력서 접수">
     <div class="form-body">
       <p class="required-notice"><span>*</span> 표시는 필수 질문입니다.</p>
 
@@ -258,6 +259,7 @@
         목적 달성 후 즉시 파기됩니다.
       </div>
 
+      <p data-submit-feedback role="alert" tabindex="-1" hidden style="color:#a11212;background:#fff3f3;border:1px solid #edb9b9;border-radius:8px;padding:14px;line-height:1.6;"></p>
       <button type="submit" class="submit-btn">이력서 제출하기</button>
     </div>
   </form>
@@ -303,30 +305,8 @@ document.querySelectorAll('input[name="전문 분류"]').forEach(function(radio)
   });
 });
 
-document.getElementById('resumeForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  var form = this;
-  var data = new FormData(form);
-  data.append('_subject', '[메디헬퍼스] 새 이력서 접수');
-  data.append('_template', 'table');
-  data.append('_captcha', 'false');
-
-  fetch('https://formsubmit.co/ajax/hr@medihelpers.co.kr', {
-    method: 'POST',
-    body: data
-  }).then(function(response) {
-    return response.json();
-  }).then(function() {
-    document.querySelector('.form-container').style.display = 'none';
-    document.getElementById('thanksScreen').style.display = 'block';
-    window.scrollTo(0, 0);
-  }).catch(function() {
-    document.querySelector('.form-container').style.display = 'none';
-    document.getElementById('thanksScreen').style.display = 'block';
-    window.scrollTo(0, 0);
-  });
-});
 </script>
 
+<script src="form-submit.js?v=20261020-1"></script>
 </body>
 </html>
