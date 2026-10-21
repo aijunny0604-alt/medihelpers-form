@@ -10,17 +10,18 @@ test('직접 방문한 옛 완료 페이지는 접수 성공을 단정하지 않
   assert.doesNotMatch(html, /정상적으로 접수되었습니다|<title>제출 완료/);
   assert.match(html, /중복 제출 전에/);
 });
-function setup(subject, fetchImpl) {
+function setup(subject, fetchImpl, overrides = {}) {
   let listener, timeout, calls = 0;
   const data = new Map([['검수', '입력값 유지']]);
-  const button = { textContent: '제출하기', disabled: false };
+  const button = { textContent: '제출하기', disabled: true };
+  const loadNotice = { hidden: false };
   const feedback = { hidden: true, textContent: '', focus() { this.focused = true; } };
   const panel = { style: { display: '' } };
   const thanks = { style: { display: 'none' } };
   const title = { setAttribute() {}, focus() { this.focused = true; } };
   const attrs = {};
   const form = {
-    querySelector: selector => selector.startsWith('button') ? button : feedback,
+    querySelector: selector => selector.startsWith('button') ? button : selector === '[data-load-notice]' ? loadNotice : feedback,
     reportValidity: () => true,
     addEventListener: (_, fn) => { listener = fn; },
     getAttribute: () => subject,
@@ -38,12 +39,13 @@ function setup(subject, fetchImpl) {
     AbortController,
     setTimeout: fn => { timeout = fn; return 1; },
     clearTimeout: () => {},
-    fetch: (...args) => { calls++; return fetchImpl(...args); }
+    fetch: (...args) => { calls++; return fetchImpl(...args); },
+    ...overrides
   });
   return { submit: () => listener({ preventDefault() {} }), expire: () => timeout(),
-    form, button, feedback, panel, thanks, title, attrs, data, get calls() { return calls; } };
+    form, button, loadNotice, feedback, panel, thanks, title, attrs, data, get calls() { return calls; } };
 }
-const response = (success, ok = true) => ({ ok, json: async () => ({ success }) });
+const response = (success, ok = true, status = ok ? 200 : 500) => ({ ok, status, json: async () => ({ success }) });
 for (const [file, id, subject] of [
   ['index.html', 'resumeForm', '[메디헬퍼스] 새 이력서 접수'],
   ['recruit.html', 'recruitForm', '[메디헬퍼스] 새 초빙 의뢰서 접수']
@@ -54,6 +56,21 @@ for (const [file, id, subject] of [
     assert.ok(html.includes('data-submit-feedback role="alert"'));
     assert.equal((html.match(/src="form-submit.js\?v=/g) || []).length, 1);
     assert.ok(!html.includes("fetch('https://formsubmit"));
+    assert.match(html, /<form[^>]+method="post"/);
+    assert.match(html, /<button[^>]+type="submit"[^>]+disabled/);
+    assert.match(html, /data-load-notice/);
+  });
+  test(`${id}: enables submission only after initialization`, () => {
+    const h = setup(subject, async () => response(true));
+    assert.equal(h.button.disabled, false);
+    assert.equal(h.loadNotice.hidden, true);
+    assert.equal(h.calls, 0);
+  });
+  for (const feature of ['fetch', 'FormData', 'AbortController']) test(`${id}: missing ${feature} keeps submission locked`, () => {
+    const h = setup(subject, async () => response(true), { [feature]: undefined });
+    assert.equal(h.button.disabled, true);
+    assert.equal(h.loadNotice.hidden, false);
+    assert.equal(h.calls, 0);
   });
   for (const value of [true, 'true']) test(`${id}: explicit success ${JSON.stringify(value)}`, async () => {
     const h = setup(subject, async (url, options) => {
@@ -72,7 +89,9 @@ for (const [file, id, subject] of [
   for (const [name, impl] of [
     ['network', async () => { throw new Error('offline'); }],
     ['HTTP 500 even with success', async () => response(true, false)],
-    ['HTTP 429', async () => response(false, false)],
+    ['HTTP 429', async () => response(false, false, 429)],
+    ['HTTP 400', async () => response(false, false, 400)],
+    ['HTTP 408', async () => response(false, false, 408)],
     ['API false', async () => response(false)],
     ['API string false', async () => response('false')],
     ['missing success', async () => response(undefined)],
@@ -86,6 +105,13 @@ for (const [file, id, subject] of [
     assert.equal(h.feedback.hidden, false);
     assert.equal(h.feedback.focused, true);
     assert.match(h.feedback.textContent, /전송/);
+    if (['HTTP 429', 'HTTP 400', 'API false', 'API string false'].includes(name)) {
+      assert.match(h.feedback.textContent, /거절/);
+    } else {
+      assert.match(h.feedback.textContent, /결과를 확인하지 못/);
+      assert.match(h.feedback.textContent, /중복 제출 전에/);
+      assert.doesNotMatch(h.feedback.textContent, /다시 시도해/);
+    }
     assert.equal(h.button.disabled, false);
     assert.equal(h.button.textContent, '제출하기');
     assert.equal(h.attrs['aria-busy'], 'false');

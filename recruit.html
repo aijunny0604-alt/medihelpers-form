@@ -194,7 +194,7 @@
     </div>
   </div>
 
-  <form id="recruitForm" data-mail-subject="[메디헬퍼스] 새 초빙 의뢰서 접수">
+  <form id="recruitForm" data-mail-subject="[메디헬퍼스] 새 초빙 의뢰서 접수" method="post">
     <div class="form-body">
       <p class="required-notice"><span>*</span> 표시는 필수 질문입니다.</p>
 
@@ -283,7 +283,9 @@
       </div>
 
       <p data-submit-feedback role="alert" tabindex="-1" hidden style="color:#a11212;background:#fff3f3;border:1px solid #edb9b9;border-radius:8px;padding:14px;line-height:1.6;"></p>
-      <button type="submit" class="submit-btn">초빙 의뢰서 제출하기</button>
+      <p data-load-notice role="status" style="color:#555;line-height:1.6;margin-bottom:16px;">제출 버튼이 활성화되지 않으면 페이지를 새로고침해 주세요. 계속 이용할 수 없다면 hr@medihelpers.co.kr로 문의해 주세요.</p>
+      <noscript><p>이 양식을 전송하려면 브라우저에서 JavaScript를 허용해 주세요.</p></noscript>
+      <button type="submit" class="submit-btn" disabled>초빙 의뢰서 제출하기</button>
     </div>
   </form>
 
@@ -311,6 +313,6 @@
   </div>
 </div>
 
-<script src="form-submit.js?v=20261020-1"></script>
+<script src="form-submit.js?v=20261021-1"></script>
 </body>
 </html>
